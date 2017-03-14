@@ -1,0 +1,66 @@
+=head1 NAME 
+
+IODP-TCP - input/output descriptor protocol for TCP sockets
+
+=head1 DESCRIPTION
+
+This text documents the TCP specific parts of the 
+input/output descriptors protocol.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 8
+
+=item IODP_n_PROTO
+
+will be set to TCP4.
+
+=item IODP_n_LOCALADDR1
+
+will be set to the local IP address the socket is bound to.
+
+If the socket is not bound to an address then this variable will
+not be set. 
+
+If the socket is bound to B<any> address then this variable
+will be set to B<0.0.0.0>.
+
+=item IODP_n_LOCALADDR2
+
+will be set to the local port the socket is bound to, or will be
+empty if the socket is not bound to any port.
+
+=item IODP_n_LOCALNAME
+
+may be set to the first DNS name of the local address of the socket.
+
+=item IODP_n_REMOTEADDR1
+
+will be set to the remote IP address the socket is connected to.
+If the socket is not connected then this variable will not be set. 
+
+=item IODP_n_REMOTEADDR2
+
+will be set to the remote port the socket is bound to, or will be
+empty if the socket is not connected.
+
+=item IODP_n_REMOTENAME
+
+may be set to the first DNS name of the host the socket is connected
+to, or will be empty if the socket is not connected.
+
+=item IODP_n_LISTEN
+
+may be set to a numerical value describing the backlog argument 
+given to the I<listen> system call if the socket is in
+I<listen> state. It will be unset if the value is not known
+or the socket is in a different state.
+
+=back
+
+=head1 SEE ALSO
+
+L<S<The IODP specification iodp(5)>|iodp>.
+
+=for html <hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>

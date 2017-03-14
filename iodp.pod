@@ -1,0 +1,151 @@
+=head1 NAME
+
+IODP - input/output descriptors protocol
+
+=head1 DESCRIPTION
+
+This text documents version 1.0 of the
+input/output descriptors protocol,
+a protocol designed to describe file, socket or pipe descriptors
+to ease their transfer between programs.
+
+IODP is not meant to describe every possible state of a socket
+or file.
+
+IODP uses environment variables to describe i/o descriptors.
+This limits the use of the protocol to systems having proper
+environment semantics, for example unixoid systems.
+
+The following table lists the environment variables defined as of
+the time of writing. B<n> stands for a number. B<m> stands
+for another number.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 8
+
+=item IODP
+
+It holds a list of file descriptors for which descriptions are available. 
+The comma character is used to separate list elements.
+
+If this variable is not set or is set to an empty value then the IODP
+protocol is B<not> used and any environment variables starting with the
+string B<IODP> must be ignored.
+
+Example:
+
+    IODP=5,10
+
+=back
+
+Other environment variables start with B<IODP_>, the file descriptor
+number and another underscore. Example:
+
+      the names of environment variables describing 
+      file descriptor 6 all start with IODP_6_. 
+
+Environment variables with names containing
+file descriptors which are not included in B<$IODP> must be ignored.
+
+=over 8
+
+=item IODP_n_PROTO
+
+Describes the kind of descriptor B<n>. This environment variable
+B<must> exist for every descriptor listed in B<$IODP>.
+IODP protocol descriptons are documented seperately, see below.
+
+=item IODP_n_SYMNAME
+
+a symbolic name for the file descriptor. This variable is 
+optional. The client may use it as it pleases.
+
+=item IODP_n_LOCALNAME
+
+a protocol dependant name for the file descriptor, usually a
+host or file name. This variable is optional.
+
+=item IODP_n_LOCALADDRm
+
+a protocol specified address for the local part of a connection.
+This will quite often simply be a file name. This variable is
+optional but mandatory for some protocols.
+
+B<m> stands for a number and starts with 1.
+
+=item IODP_n_FLAGS
+
+a string of characters. Values include:
+
+=over 4
+
+=item r
+
+file descriptor may be read from.
+
+=item w
+
+file descriptor may be written to.
+
+=item a
+
+file descriptor may be used as argument to the accept
+system call (that means that B<n> is a file descriptor
+in listen state).
+
+=item C
+
+the file descriptor is connected (useful for sockets). 
+In that case B<IODP_n_REMOTEADDR> and/or 
+B<IODP_n_REMOTENAME> may be set.
+
+=item S
+
+file descriptor is seekable.
+
+=item T
+
+file descriptor points to a terminal device (or pseudo terminal).
+
+=back
+
+=back
+
+=head1 IODP protocols
+
+=over 8
+
+=item IODP-TCP4
+
+describes IODP for TCP over ip version 4 connections.
+
+=item IODP-UDP4
+
+describes IODP for UDP over ip version 4.
+
+=item IODP-UXSTREAM
+
+describes IODP for unix domain stream sockets.
+
+=item IODP-UXDGRAM
+
+describes IODP for unix domain datagram sockets.
+
+=item IODP-FILE
+
+describes IODP for normal files, including pipes.
+
+=back
+
+=head1 SEE ALSO
+
+L<S<IODP over UDP/IP version 4: iodp-udp4(5)>|iodp-udp4>,
+L<S<IODP over TCP/IP version 4: iodp-tcp4(5)>|iodp-tcp4>,
+L<S<IODP over unix domain stream sockets: iodp-uxstream(5)>|iodp-uxstream>,
+L<S<IODP over unix domain datagram sockets: iodp-uxdgram(5)>|iodp-uxdgram>, 
+and
+L<S<IODP for file handles: iodp-file(5)>|iodp-file>.
+
+=for html <hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>

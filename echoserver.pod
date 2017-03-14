@@ -1,0 +1,131 @@
+=head1 NAME
+
+echoserver - echo / discard server
+
+=head1 SYNOPSIS
+
+echoserver [options]
+
+=head1 DESCRIPTION
+
+B<echoserver> is a single threaded server, handling packets coming
+in on one or more UDP or TCP server sockets and echoing them back 
+to the sender.
+
+I<options> is a is a series of getopt or  getopt_long style options. See
+below for more information.
+
+The server sockets have to be created before. Usually this is done
+by B<tcpsocket> or B<udpsocket>. 
+
+B<echoserver> is a demonstration code.
+
+=head1 OPTIONS
+
+=over 8
+
+=item -d, --discard
+
+Don't echo packets back to the sender.
+
+=item -i, --interval SECONDS            
+
+Length of an accounting period in seconds. The number of bytes received is
+collected for two periods, after which the data of the oldest period
+is forgotten. 
+
+This option is useless unless used together with I<-r>.
+
+=item -r, --rules FILENAME
+
+Name of a CDB file containing the accounting / access rules. See
+RULES, below.
+
+=item -s, --slots NUMBER
+
+Maximum number of open sockets, including the server sockets.
+
+=item -t, --timeout SECONDS
+
+Drop inbound TCP connections after that many seconds of
+inactivity.
+
+=item     --version             
+
+Show version information.
+
+
+=item     --help                
+
+Show a list of options or the long help on one.
+
+The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.
+
+=item     --longhelp            
+
+Show longer help texts for all or one variable
+
+The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.
+
+=back
+
+=head1 RULES
+
+B<echoserver> implements a simple kind of access control, utilizing a
+constant database (CDB) file, which is re-opened every 60 seconds. 
+
+B<echoservers> rule files are compiled by the tcprules utility from 
+Daniel Bernsteins B<ucspi-tcp> package:
+
+  tcprules CDB-filename TMP-filename <rules-filename
+
+=for html See the <a href="http://cr.yp.to/ucspi-tcp.html">
+ucspi-tcp home page</a> for more information.
+
+B<echoservers> rule resolution is like that of B<tcpserver>, and
+the rule format is like that of B<tcprules>, with
+the following exceptions:
+
+  1. There is nothing like $TCPREMOTEINFO in echoserver.
+  2. The $TCPREMOTEIP environment variable is not used, but 
+     the IP address of the remote host is used instead.
+  3. The $TCPREMOTEHOST environment variable is not used, but
+     the host name of the remote host is used instead.
+  4. echoserver doesn't set environment variables, but
+     honors the "limit" variable, which limits how many
+     bytes are echoed back during two periods (0 means
+     "no limit").
+
+=head2 Rules file example
+
+  194.77.219.16-31:allow,limit="0"
+  194.245.:allow,limit="128000"
+  :deny
+
+=head1 EXAMPLES
+
+How to start B<echoserver>:
+
+  tcpsocket 0 7 \
+  udpsocket 0 7 \
+  echoserver -r rules.cdb
+
+=head1 BUGS
+
+unknown.
+
+=head1 AUTHOR
+
+Uwe Ohse
+
+=head1 SEE ALSO
+
+=for man udpsocket(8), tcpsocket(8).
+http://cr.yp.to/ucspi-tcp.html
+
+=for html <h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>

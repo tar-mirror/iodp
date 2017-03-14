@@ -1,0 +1,12 @@
+file-iodp.c: GPL, Author Uwe Ohse
+iodp_set.c: GPL, Author Uwe Ohse
+iodptools.h: GPL, Author Uwe Ohse
+main.c: GPL, Author Uwe Ohse
+set_ugid.c: GPL, Author Uwe Ohse
+sock4.c: GPL, Author Uwe Ohse
+sockux.c: GPL, Author Uwe Ohse
+move_fd.c: GPL, Author Uwe Ohse
+tcpsocket.c: GPL, Author Uwe Ohse
+udpsocket.c: GPL, Author Uwe Ohse
+uxdgrmsocket.c: GPL, Author Uwe Ohse
+uxstrmsocket.c: GPL, Author Uwe Ohse

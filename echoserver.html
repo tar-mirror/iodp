@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+<TITLE>echo / discard service</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#options">OPTIONS</A></LI>
+	<LI><A HREF="#rules">RULES</A></LI>
+	<UL>
+
+		<LI><A HREF="#rules file example">Rules file example</A></LI>
+	</UL>
+
+	<LI><A HREF="#examples">EXAMPLES</A></LI>
+	<LI><A HREF="#bugs">BUGS</A></LI>
+	<LI><A HREF="#author">AUTHOR</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<P>echoserver - echo / discard server</P>
+<P>
+<HR>
+<H1><A NAME="synopsis">SYNOPSIS</A></H1>
+<P>echoserver [options]</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P><STRONG>echoserver</STRONG> is a single threaded server, handling packets coming
+in on one or more UDP or TCP server sockets and echoing them back 
+to the sender.</P>
+<P><EM>options</EM> is a is a series of getopt or  getopt_long style options. See
+below for more information.</P>
+<P>The server sockets have to be created before. Usually this is done
+by <STRONG>tcpsocket</STRONG> or <STRONG>udpsocket</STRONG>.</P>
+<P><STRONG>echoserver</STRONG> is a demonstration code.</P>
+<P>
+<HR>
+<H1><A NAME="options">OPTIONS</A></H1>
+<DL>
+<DT><STRONG><A NAME="item_%2Dd%2C_%2D%2Ddiscard">-d, --discard</A></STRONG><BR>
+<DD>
+Don't echo packets back to the sender.
+<P></P>
+<DT><STRONG><A NAME="item_%2Di%2C_%2D%2Dinterval_SECONDS">-i, --interval SECONDS</A></STRONG><BR>
+<DD>
+Length of an accounting period in seconds. The number of bytes received is
+collected for two periods, after which the data of the oldest period
+is forgotten.
+<P>This option is useless unless used together with <EM>-r</EM>.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dr%2C_%2D%2Drules_FILENAME">-r, --rules FILENAME</A></STRONG><BR>
+<DD>
+Name of a CDB file containing the accounting / access rules. See
+RULES, below.
+<P></P>
+<DT><STRONG><A NAME="item_%2Ds%2C_%2D%2Dslots_NUMBER">-s, --slots NUMBER</A></STRONG><BR>
+<DD>
+Maximum number of open sockets, including the server sockets.
+<P></P>
+<DT><STRONG><A NAME="item_%2Dt%2C_%2D%2Dtimeout_SECONDS">-t, --timeout SECONDS</A></STRONG><BR>
+<DD>
+Drop inbound TCP connections after that many seconds of
+inactivity.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dversion">--version</A></STRONG><BR>
+<DD>
+Show version information.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dhelp">--help</A></STRONG><BR>
+<DD>
+Show a list of options or the long help on one.
+<P>The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dlonghelp">--longhelp</A></STRONG><BR>
+<DD>
+Show longer help texts for all or one variable
+<P>The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.</P>
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="rules">RULES</A></H1>
+<P><STRONG>echoserver</STRONG> implements a simple kind of access control, utilizing a
+constant database (CDB) file, which is re-opened every 60 seconds.</P>
+<P><STRONG>echoservers</STRONG> rule files are compiled by the tcprules utility from 
+Daniel Bernsteins <STRONG>ucspi-tcp</STRONG> package:</P>
+<PRE>
+  tcprules CDB-filename TMP-filename &lt;rules-filename</PRE>
+See the <a href="http://cr.yp.to/ucspi-tcp.html">
+ucspi-tcp home page</a> for more information.<P><STRONG>echoservers</STRONG> rule resolution is like that of <STRONG>tcpserver</STRONG>, and
+the rule format is like that of <STRONG>tcprules</STRONG>, with
+the following exceptions:</P>
+<PRE>
+  1. There is nothing like $TCPREMOTEINFO in echoserver.
+  2. The $TCPREMOTEIP environment variable is not used, but 
+     the IP address of the remote host is used instead.
+  3. The $TCPREMOTEHOST environment variable is not used, but
+     the host name of the remote host is used instead.
+  4. echoserver doesn't set environment variables, but
+     honors the &quot;limit&quot; variable, which limits how many
+     bytes are echoed back during two periods (0 means
+     &quot;no limit&quot;).</PRE>
+<P>
+<H2><A NAME="rules file example">Rules file example</A></H2>
+<PRE>
+  194.77.219.16-31:allow,limit=&quot;0&quot;
+  194.245.:allow,limit=&quot;128000&quot;
+  :deny</PRE>
+<P>
+<HR>
+<H1><A NAME="examples">EXAMPLES</A></H1>
+<P>How to start <STRONG>echoserver</STRONG>:</P>
+<PRE>
+  tcpsocket 0 7 \
+  udpsocket 0 7 \
+  echoserver -r rules.cdb</PRE>
+<P>
+<HR>
+<H1><A NAME="bugs">BUGS</A></H1>
+<P>unknown.</P>
+<P>
+<HR>
+<H1><A NAME="author">AUTHOR</A></H1>
+<P>Uwe Ohse</P>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

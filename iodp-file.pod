@@ -1,0 +1,29 @@
+=head1 NAME 
+
+IODP-FILE - input/output descriptor protocol for files
+
+=head1 DESCRIPTION
+
+This text documents the environment variables used to
+describes files or pipes.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 8
+
+=item IODP_n_PROTO
+
+will be set to FILE.
+
+=item IODP_n_LOCALNAME
+
+will be set to the name of the file, if known.
+
+=back
+
+=head1 SEE ALSO
+
+L<S<The IODP specification iodp(5)>|iodp>.
+
+=for html <hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>

@@ -1,0 +1,223 @@
+<HTML>
+<HEAD>
+<TITLE>create an TCP socket</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#options">OPTIONS</A></LI>
+	<UL>
+
+		<LI><A HREF="#socket options:">Socket options:</A></LI>
+		<LI><A HREF="#child program options:">Child program options:</A></LI>
+		<LI><A HREF="#datagathering options:">Data-gathering options:</A></LI>
+		<LI><A HREF="#verbosity options:">Verbosity options:</A></LI>
+	</UL>
+
+	<LI><A HREF="#environment">ENVIRONMENT</A></LI>
+	<LI><A HREF="#examples">EXAMPLES</A></LI>
+	<LI><A HREF="#bugs">BUGS</A></LI>
+	<LI><A HREF="#author">AUTHOR</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<PRE>
+         tcpsocket - create a TCP socket and run a program</PRE>
+<P>
+<HR>
+<H1><A NAME="synopsis">SYNOPSIS</A></H1>
+<P>tcpsocket [options] host port program [arguments]</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P><STRONG>tcpserver</STRONG> creates a TCP socket, binds it to <EM>host</EM> and <EM>port</EM>
+and runs <EM>program</EM> with the remaining arguments.</P>
+<P><EM>options</EM> is a is a series of getopt or  getopt_long style options. See
+below for more information.</P>
+<P>The socket is described by <EM>host</EM> and <EM>port</EM>. <EM>host</EM>
+may be 0, allowing connections to any local IP address; 
+or a dotted-decimal IP address, allowing connections only to
+that address; or a host name, allowing connections to the first IP
+address for that host. Host names are fed through qualification using
+DNS_IP4_qualify.
+<EM>port</EM> may be a name from /etc/services or a number; if it is 0,
+<STRONG>tcpsocket</STRONG> will choose a free TCP port.</P>
+<P>
+<HR>
+<H1><A NAME="options some people make this separate from the description.">OPTIONS
+Some people make this separate from the
+description.</A></H1>
+<P>
+<H2><A NAME="socket options:">Socket options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2Db%2C_%2D%2Dbacklog%3DN">-b, --backlog=N</A></STRONG><BR>
+<DD>
+Allow a backlog of <EM>N</EM> TCP SYNs.
+<P>On some systems, <EM>N</EM> is silently limited to 5.
+On systems supporting SYN cookies, the backlog is
+irrelevant. The default is 20.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dd%2C_%2D%2Dtcpdelay">-d, --tcpdelay</A></STRONG><BR>
+<DD>
+Delay sending data for a fraction of a second
+whenever the remote host is responding slowly.
+This is the default, but it may not be in the
+future; if you want it, set it explicitly.
+<P></P>
+<DT><STRONG><A NAME="item_%2DD%2C_%2D%2Dtcpnodelay">-D, --tcpnodelay</A></STRONG><BR>
+<DD>
+Never delay sending data; enable TCP_NODELAY.
+<P></P>
+<DT><STRONG><A NAME="item_%2Do%2C_%2D%2Dallow%2Dip%2Doptions">-o, --allow-ip-options</A></STRONG><BR>
+<DD>
+Leave IP options alone.
+<P>If the client is sending packets along an
+IP source route, send packets back along the
+same route.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2DO%2C_%2D%2Dkill%2Dip%2Doptions">-O, --kill-ip-options</A></STRONG><BR>
+<DD>
+Kill IP options.
+<P>A client can still use source routing to connect
+and to send data, but packets will be sent back
+along the default route.
+This is the default.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="child program options:">Child program options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2DC%2C_%2D%2Dchroot%3DDIR">-C, --chroot=DIR</A></STRONG><BR>
+<DD>
+Change the working directory to <EM>DIR</EM>. Then change the
+root directory of the process to <EM>.</EM> (the current 
+directory). 
+This will be done after the socket has been created
+and before changing the group or user ID.
+<P></P>
+<DT><STRONG><A NAME="item_%2DF%2C_%2D%2Dfd%3DN">-F, --fd=N</A></STRONG><BR>
+<DD>
+Move socket handle to file descriptor <EM>N</EM>.
+<P><EM>N</EM> is an integer in the range from 0 to a system
+``dependent limit. The default is to not move it.
+Note that moving the socket to file descriptor 2
+may disturb the output of error messages.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dg%2C_%2D%2Dgid%3DGID">-g, --gid=GID</A></STRONG><BR>
+<DD>
+Group ID to change to.
+<P>tcpsocket will switch to that group id after
+the socket has been set up. GID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Du%2C_%2D%2Duid%3DUID">-u, --uid=UID</A></STRONG><BR>
+<DD>
+User ID to change to.
+<P>tcpsocket will switch to that user id after
+the socket has been set up. UID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2DU%2C_%2D%2Duidgid">-U, --uidgid</A></STRONG><BR>
+<DD>
+The same as <STRONG>-u</STRONG> $UID <STRONG>-g</STRONG> $GID.
+<P>Usually used together with envuidgid.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="datagathering options:">Data-gathering options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2Dl%2C_%2D%2Dlocalhost%3DNAME">-l, --localhost=NAME</A></STRONG><BR>
+<DD>
+Use <EM>NAME</EM> as local host name.
+<P>Do not look up the local host name in the DNS.
+This information is used for log files and
+the environment variable <EM>IODP_n_LOCALNAME</EM></P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dy%2C_%2D%2Dsymbolic%2Dname%3DNAME">-y, --symbolic-name=NAME</A></STRONG><BR>
+<DD>
+Use <EM>NAME</EM> as symbolic socket name.
+<P>This is used for $IODP_n_SYMNAME, and may be
+used by IODP compliant application in an
+application dependant way. The default is to not
+set it.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="verbosity options:">Verbosity options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2D1">-1</A></STRONG><BR>
+<DD>
+Print the local port number to the standard output.
+<P></P>
+<DT><STRONG><A NAME="item_%2Dq%2C_%2D%2Dquiet">-q, --quiet</A></STRONG><BR>
+<DD>
+Quiet. Do not print error messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2DQ">-Q</A></STRONG><BR>
+<DD>
+Print error messages.
+<P>This is the default.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dv%2C_%2D%2Dverbose">-v, --verbose</A></STRONG><BR>
+<DD>
+Verbose. Print error and status messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dversion">--version</A></STRONG><BR>
+<DD>
+Show version information.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dhelp">--help</A></STRONG><BR>
+<DD>
+Show a list of options or the long help on one.
+<P>The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dlonghelp">--longhelp</A></STRONG><BR>
+<DD>
+Show longer help texts for all or one variable
+<P>The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.</P>
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="environment">ENVIRONMENT</A></H1>
+<P><STRONG>tcpsocket</STRONG> sets the environment variables documented in the
+<EM>iodp-tcp</EM> specification.</P>
+<P>
+<HR>
+<H1><A NAME="examples">EXAMPLES</A></H1>
+<PRE>
+        tcpsocket 0 119 \
+        setuidgid news \
+        env - PATH=&quot;$PATH:/news/bin&quot; TMPDIR=/news/tmp SHELL=/bin/sh \
+            LOGNAME=news USER=news HOME=/news  \
+        /news/bin/innd</PRE>
+<P>
+<HR>
+<H1><A NAME="bugs">BUGS</A></H1>
+<P>unknown.</P>
+<P>
+<HR>
+<H1><A NAME="author">AUTHOR</A></H1>
+<P>Uwe Ohse</P>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

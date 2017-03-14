@@ -1,0 +1,43 @@
+=head1 NAME
+
+IODP-UXSTREAM - IODP for unix domain stream sockets
+
+=head1 DESCRIPTION
+
+This text documents the unix domain stream socket specific parts of the 
+input/output descriptors protocol.
+
+=head1 Environment Variables
+
+=over 8
+
+=item IODP_n_PROTO
+
+will be set to B<UXSTREAM>.
+
+=item IODP_n_LOCALNAME
+
+will be set to the path to the socket, if known, and will be 
+unset otherwise.
+
+=item IODP_n_REMOTENAME
+
+will be set to the path to the socket, if the socket is connected
+and the name the other side of the socket has connected to is known, 
+and will be unset otherwise.
+
+=item IODP_n_LISTEN
+
+may be set to a numerical value describing the backlog argument 
+given to the I<listen> system call if the socket is in
+I<listen> state. It will be unset if the value is not known
+or the socket is in a different state.
+
+=back
+
+=head1 SEE ALSO
+
+L<S<The IODP specification iodp(5)>|iodp>.
+
+=for html <hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>

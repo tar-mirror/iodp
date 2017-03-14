@@ -1,0 +1,26 @@
+iodp                                                                   Uwe Ohse
+http://www.ohse.de/uwe/iodp.html                                    uwe@ohse.de
+
+The package comes with NO warranty.
+===================================
+
+
+tcpsocket creates a TCP listener socket and runs a program.
+
+udpsocket creates a UDP socket and runs a program.
+
+uxstreamsocket creates a unix domain stream socket and runs a program.
+
+uxdgramsocket creates a unix domain datagram socket and runs a program.
+
+file-iodp creates or opens a file and starts a program.
+
+---------------------------------------------------------------------------
+
+The applications conform to the IODP protocol. 
+See http://www.ohse.de/uwe/protocols/iodp/iodp.html for more information.
+
+See the file LICENSES for copyright information.
+
+See http://www.ohse.de/uwe/iodp.html for informations how to install 
+to tools. Short form: make && make install.

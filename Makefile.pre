@@ -1,0 +1,101 @@
+VERSION=0.2.4
+PACKAGE=iodp
+prefix=/usr/local
+EXTRA_DIST=$(AUTOMAN) install.list Makefile.pre
+CLEANFILES=check.out
+
+DISTFILES=README NEWS ChangeLog $(MAN) docheck check.exp \
+  _alloc.h   _dns.h    _pathexec.h   _readwrite.h \
+  _buffer.h  _getln.h  _readclose.h  _stralloc.h \
+  _str.h _ip4.h  fifo.h \
+  typesize.h iodptools.h close.h \
+   _scan.h iodp_get.h _sig.h iprules.h \
+   trysgact.c choose.sh iopause.sh \
+  $(EXTRA_DIST)
+
+!G:iodp.pod:iodp.5:iodp.html:the IODP protocol
+!G:iodp-tcp4.pod:iodp-tcp4.5:iodp-tcp4.html:IODP for TCP over IPv4
+!G:iodp-udp4.pod:iodp-udp4.5:iodp-udp4.html:IODP for UDP over IPv4
+!G:iodp-uxstream.pod:iodp-uxstream.5:iodp-uxstream.html:IODP over unix domain stream sockets
+!G:iodp-uxdgram.pod:iodp-uxdgram.5:iodp-uxdgram.html:IODP over unix domain datagram sockets
+!G:iodp-file.pod:iodp-file.5:iodp-file.html:using IODP to describe file handles
+!G:udpsocket.pod:udpsocket.8:udpsocket.html:create an UDP socket
+!G:tcpsocket.pod:tcpsocket.8:tcpsocket.html:create an TCP socket
+!G:file-iodp.pod:file-iodp.8:file-iodp.html:set IODP environment for files
+!G:echoserver.pod:echoserver.8:echoserver.html:echo / discard service
+!G:uxdgramsocket.pod:uxdgramsocket.8:uxdgramsocket.html:create a unix domain datagram socket
+!G:uxstreamsocket.pod:uxstreamsocket.8:uxstreamsocket.html:create a unix domain stream socket
+
+!I:premake.defs
+!l:dns:dns_ip4 dns_ip4_qualify  dns_name4 dns_domain_todot_cat
+!l:unix:error_str socket_recv4 socket_peek4 socket_ntohs socket_htons \
+        socket_udp socket_bind4 socket_local4 socket_send4 socket_connect4 \
+		socket_tcp socket_connected socket_listen socket_bind4_reuse \
+		socket_ipoptionskill socket_tcpnodelay error_temp \
+		socket_dgramux socket_streamux socket_bindux socket_connectux \
+		socket_accept4 \
+		iopause seek_set open_read readclose \
+		alloc alloc_re stralloc_copys stralloc_free stralloc_append \
+		stralloc_catb stralloc_cats stralloc_copy stralloc_cat \
+		stralloc_catulong0 \
+		buffer_init buffer_puts buffer_peek buffer_flush buffer_0 \
+		getln fifo_make \
+		ndelay_on ndelay_off \
+		prot_uid prot_gid coe \
+		pathexec_run pathexec_env env_get \
+		openreadclose readclose open_trunc fd_move fd_copy \
+		sig_pipe sig_catch
+!l:byte:byte_copy byte_diff ip4_fmt ip4_scan byte_zero str_chr fmt_ulong \
+        byte_chr case_diffb uint16_unpack_big uint16_pack_big \
+		uint32_unpack case_diffs \
+		str_len byte_copyr scan_ulong  str_start str_diff scan_long str_rchr
+!l:uomisc:uogetopt str_ulong start str2ulong bailout str2long \
+   str_ulong_fmt uogetopt_join
+!l:tai:taia_now taia_less taia_uint taia_add taia_pack taia_sub taia_approx \
+       taia_half tai_sub tai_now taia_tai
+!l:strhash:strhash_hash strhash_create strhash_enter strhash_lookup \
+   strhash_change strhash_destroy strhash_get
+!l:cdb:cdb_find cdb_init cdb_free cdb_read
+!T:udpsocket:\
+   main.c udpsocket.c verb_socket.c move_fd.c set_ugid.c sock4.c iodp_set.c:\
+   libdns.a libuomisc.a \
+   libunix.a libuomisc.a libtai.a libbyte.a socket.lib gettimeofday.lib
+!T:tcpsocket:\
+   main.c tcpsocket.c verb_socket.c move_fd.c set_ugid.c sock4.c iodp_set.c:\
+   libdns.a libuomisc.a \
+   libunix.a libuomisc.a libtai.a libbyte.a socket.lib gettimeofday.lib
+!T:uxstreamsocket:\
+   main.c uxstrmsocket.c verb_socket.c move_fd.c set_ugid.c sockux.c \
+   iodp_set.c:\
+   libuomisc.a \
+   libunix.a libuomisc.a libtai.a libbyte.a socket.lib gettimeofday.lib
+!T:uxdgramsocket:\
+   main.c uxdgrmsocket.c verb_socket.c move_fd.c set_ugid.c sockux.c \
+   iodp_set.c:\
+   libuomisc.a \
+   libunix.a libuomisc.a libtai.a libbyte.a socket.lib gettimeofday.lib
+!T:file-iodp:\
+   main.c file-iodp.c move_fd.c set_ugid.c iodp_set.c:\
+   libuomisc.a \
+   libunix.a libuomisc.a libtai.a libbyte.a gettimeofday.lib
+!T:echoserver:\
+   echoserver.c iodp_get.c iprules.c:\
+   libdns.a libuomisc.a libcdb.a \
+   libstrhash.a libunix.a libuomisc.a libtai.a libbyte.a gettimeofday.lib
+#
+!Y:fsync
+!Y:socket
+!Y:ssize_t
+!Y:socklen_t
+!Y:typesize
+
+!E:docheck
+!I:premake.rules
+
+check: 
+	env - PATH="`pwd`:$$PATH" sh docheck 2>&1 | cat -v | tee check.out | \
+	diff -u check.exp -
+
+%.o: %.c
+	./compile.sh -c $<
+

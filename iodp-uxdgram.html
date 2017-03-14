@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<TITLE>IODP over unix domain datagram sockets</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#environment variables">Environment Variables</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<P>IODP-UXSTREAM - IODP for unix domain datagram sockets</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P>This text documents the unix domain datagram socket specific parts of the 
+input/output descriptors protocol.</P>
+<P>
+<HR>
+<H1><A NAME="environment variables">Environment Variables</A></H1>
+<DL>
+<DT><STRONG><A NAME="item_IODP_n_PROTO">IODP_n_PROTO</A></STRONG><BR>
+<DD>
+will be set to <STRONG>UXSTREAM</STRONG>.
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_LOCALNAME">IODP_n_LOCALNAME</A></STRONG><BR>
+<DD>
+will be set to the path to the socket, if known, and will be 
+unset otherwise.
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_LISTEN">IODP_n_LISTEN</A></STRONG><BR>
+<DD>
+may be set to a numerical value describing the backlog argument 
+given to the <EM>listen</EM> system call if the socket is in
+<EM>listen</EM> state. It will be unset if the value is not known
+or the socket is in a different state.
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<P><A HREF="././iodp.html">The&nbsp;IODP&nbsp;specification&nbsp;iodp(5)</A>.</P>
+<hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

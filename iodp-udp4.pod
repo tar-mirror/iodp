@@ -1,0 +1,44 @@
+=head1 NAME 
+
+IODP-UDP4 - input/output descriptor protocol for UDP sockets over IPv4.
+
+=head1 DESCRIPTION
+
+This text documents the UDP specific parts of the 
+input/output descriptors protocol.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 8
+
+=item IODP_n_PROTO
+
+will be set to UDP4.
+
+=item IODP_n_LOCALADDR1
+
+will be set to the local IP address the socket is bound to.
+
+If the socket is not bound to an address then this variable will
+not be set. 
+
+If the socket is bound to B<any> address then this variable
+will be set to B<0.0.0.0>.
+
+=item IODP_n_LOCALADDR2
+
+will be set to the local port the socket is bound to, or will be
+empty if the socket is not bound to any port.
+
+=item IODP_n_LOCALNAME
+
+may be set to the first DNS name of the local address of the socket.
+
+=back
+
+=head1 SEE ALSO
+
+L<The IODP specification iodp(5)|iodp>.
+
+=for html <hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>

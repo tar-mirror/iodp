@@ -1,0 +1,158 @@
+<HTML>
+<HEAD>
+<TITLE>the IODP protocol</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#environment variables">ENVIRONMENT VARIABLES</A></LI>
+	<LI><A HREF="#iodp protocols">IODP protocols</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<P>IODP - input/output descriptors protocol</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P>This text documents version 1.0 of the
+input/output descriptors protocol,
+a protocol designed to describe file, socket or pipe descriptors
+to ease their transfer between programs.</P>
+<P>IODP is not meant to describe every possible state of a socket
+or file.</P>
+<P>IODP uses environment variables to describe i/o descriptors.
+This limits the use of the protocol to systems having proper
+environment semantics, for example unixoid systems.</P>
+<P>The following table lists the environment variables defined as of
+the time of writing. <STRONG>n</STRONG> stands for a number. <STRONG>m</STRONG> stands
+for another number.</P>
+<P>
+<HR>
+<H1><A NAME="environment variables">ENVIRONMENT VARIABLES</A></H1>
+<DL>
+<DT><STRONG><A NAME="item_IODP">IODP</A></STRONG><BR>
+<DD>
+It holds a list of file descriptors for which descriptions are available. 
+The comma character is used to separate list elements.
+<P>If this variable is not set or is set to an empty value then the IODP
+protocol is <STRONG>not</STRONG> used and any environment variables starting with the
+string <STRONG>IODP</STRONG> must be ignored.</P>
+<P>Example:</P>
+<PRE>
+    IODP=5,10</PRE>
+<P></P></DL>
+<P>Other environment variables start with <STRONG>IODP_</STRONG>, the file descriptor
+number and another underscore. Example:</P>
+<PRE>
+      the names of environment variables describing 
+      file descriptor 6 all start with IODP_6_.</PRE>
+<P>Environment variables with names containing
+file descriptors which are not included in <STRONG>$IODP</STRONG> must be ignored.</P>
+<DL>
+<DT><STRONG><A NAME="item_IODP_n_PROTO">IODP_n_PROTO</A></STRONG><BR>
+<DD>
+Describes the kind of descriptor <STRONG>n</STRONG>. This environment variable
+<STRONG>must</STRONG> exist for every descriptor listed in <STRONG>$IODP</STRONG>.
+IODP protocol descriptons are documented seperately, see below.
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_SYMNAME">IODP_n_SYMNAME</A></STRONG><BR>
+<DD>
+a symbolic name for the file descriptor. This variable is 
+optional. The client may use it as it pleases.
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_LOCALNAME">IODP_n_LOCALNAME</A></STRONG><BR>
+<DD>
+a protocol dependant name for the file descriptor, usually a
+host or file name. This variable is optional.
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_LOCALADDRm">IODP_n_LOCALADDRm</A></STRONG><BR>
+<DD>
+a protocol specified address for the local part of a connection.
+This will quite often simply be a file name. This variable is
+optional but mandatory for some protocols.
+<P><STRONG>m</STRONG> stands for a number and starts with 1.</P>
+<P></P>
+<DT><STRONG><A NAME="item_IODP_n_FLAGS">IODP_n_FLAGS</A></STRONG><BR>
+<DD>
+a string of characters. Values include:
+<DL>
+<DT><STRONG><A NAME="item_r">r</A></STRONG><BR>
+<DD>
+file descriptor may be read from.
+<P></P>
+<DT><STRONG><A NAME="item_w">w</A></STRONG><BR>
+<DD>
+file descriptor may be written to.
+<P></P>
+<DT><STRONG><A NAME="item_a">a</A></STRONG><BR>
+<DD>
+file descriptor may be used as argument to the accept
+system call (that means that <STRONG>n</STRONG> is a file descriptor
+in listen state).
+<P></P>
+<DT><STRONG><A NAME="item_C">C</A></STRONG><BR>
+<DD>
+the file descriptor is connected (useful for sockets). 
+In that case <STRONG>IODP_n_REMOTEADDR</STRONG> and/or 
+<STRONG>IODP_n_REMOTENAME</STRONG> may be set.
+<P></P>
+<DT><STRONG><A NAME="item_S">S</A></STRONG><BR>
+<DD>
+file descriptor is seekable.
+<P></P>
+<DT><STRONG><A NAME="item_T">T</A></STRONG><BR>
+<DD>
+file descriptor points to a terminal device (or pseudo terminal).
+<P></P></DL>
+</DL>
+<P>
+<HR>
+<H1><A NAME="iodp protocols">IODP protocols</A></H1>
+<DL>
+<DT><STRONG><A NAME="item_IODP%2DTCP4">IODP-TCP4</A></STRONG><BR>
+<DD>
+describes IODP for TCP over ip version 4 connections.
+<P></P>
+<DT><STRONG><A NAME="item_IODP%2DUDP4">IODP-UDP4</A></STRONG><BR>
+<DD>
+describes IODP for UDP over ip version 4.
+<P></P>
+<DT><STRONG><A NAME="item_IODP%2DUXSTREAM">IODP-UXSTREAM</A></STRONG><BR>
+<DD>
+describes IODP for unix domain stream sockets.
+<P></P>
+<DT><STRONG><A NAME="item_IODP%2DUXDGRAM">IODP-UXDGRAM</A></STRONG><BR>
+<DD>
+describes IODP for unix domain datagram sockets.
+<P></P>
+<DT><STRONG><A NAME="item_IODP%2DFILE">IODP-FILE</A></STRONG><BR>
+<DD>
+describes IODP for normal files, including pipes.
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<P><A HREF="././iodp-udp4.html">IODP&nbsp;over&nbsp;UDP/IP&nbsp;version&nbsp;4:&nbsp;iodp-udp4(5)</A>,
+<A HREF="././iodp-tcp4.html">IODP&nbsp;over&nbsp;TCP/IP&nbsp;version&nbsp;4:&nbsp;iodp-tcp4(5)</A>,
+<A HREF="././iodp-uxstream.html">IODP&nbsp;over&nbsp;unix&nbsp;domain&nbsp;stream&nbsp;sockets:&nbsp;iodp-uxstream(5)</A>,
+<A HREF="././iodp-uxdgram.html">IODP&nbsp;over&nbsp;unix&nbsp;domain&nbsp;datagram&nbsp;sockets:&nbsp;iodp-uxdgram(5)</A>, 
+and
+<A HREF="././iodp-file.html">IODP&nbsp;for&nbsp;file&nbsp;handles:&nbsp;iodp-file(5)</A>.</P>
+<hr><h4><a href="../../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

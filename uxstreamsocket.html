@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<TITLE>create a unix domain stream socket</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#options">OPTIONS</A></LI>
+	<UL>
+
+		<LI><A HREF="#socket options:">Socket options:</A></LI>
+		<LI><A HREF="#child program options:">Child program options:</A></LI>
+		<LI><A HREF="#verbosity options:">Verbosity options:</A></LI>
+	</UL>
+
+	<LI><A HREF="#environment">ENVIRONMENT</A></LI>
+	<LI><A HREF="#examples">EXAMPLES</A></LI>
+	<LI><A HREF="#bugs">BUGS</A></LI>
+	<LI><A HREF="#author">AUTHOR</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<P>uxstreamsocket - create a unix domain stream socket</P>
+<P>
+<HR>
+<H1><A NAME="synopsis">SYNOPSIS</A></H1>
+<P>uxstreamsocket [options] path program [arguments]</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P><STRONG>uxstreamsocket</STRONG> creates a unix domain stream socket,
+binds it to <EM>path</EM>, and runs <EM>program</EM> with
+the remaining arguments.</P>
+<P><EM>options</EM> is a is a series of getopt or  getopt_long style options. See
+below for more information.</P>
+<P>The socket has the name <EM>path</EM>. If that file already exists
+it has to be deleted before the socket is created (you can use the
+<STRONG>-r</STRONG> / --remove-old-socket option for that). Note that deleting the file
+does not close any old instance of the socket, it will merely make
+it invisible (this means already connected sockets will stay connected).</P>
+<P>
+<HR>
+<H1><A NAME="options">OPTIONS</A></H1>
+<P>
+<H2><A NAME="socket options:">Socket options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2Db%2C_%2D%2Dbacklog%3DN">-b, --backlog=N</A></STRONG><BR>
+<DD>
+Allow a backlog of N connections.
+<P>On some systems, n is silently limited to 5.
+On systems supporting SYN cookies, the backlog is
+irrelevant. The default is 20.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dm%2C_%2D%2Dmode%3DMODE">-m, --mode=MODE</A></STRONG><BR>
+<DD>
+Set access rights of the socket to MODE.
+<P>The default is 0622.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2DR%2C_%2D%2Dunlink">-R, --unlink</A></STRONG><BR>
+<DD>
+Remove an existing (old) socket.
+<P>Use this if you are sure that no process still
+listings to an existing unix domain socket, or
+if you don't care.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="child program options:">Child program options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2DC%2C_%2D%2Dchroot%3DDIR">-C, --chroot=DIR</A></STRONG><BR>
+<DD>
+Change the working directory to <EM>DIR</EM>. Then change the
+root directory of the process to <EM>.</EM> (the current
+directory).
+This will be done after the socket has been created
+and before changing the group or user ID.
+<P></P>
+<DT><STRONG><A NAME="item_%2DF%2C_%2D%2Dfd%3DN">-F, --fd=N</A></STRONG><BR>
+<DD>
+Move socket handle to file descriptor N.
+<P>`N' may be a whitespace or comma separated list.
+The default is to move it to 5.
+Note that moving the socket to file descriptor 2
+may disturb the output of error messages.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dg%2C_%2D%2Dgid%3DGID">-g, --gid=GID</A></STRONG><BR>
+<DD>
+Group ID to change to.
+<P>uxstreamsocket will switch to that group id after
+the socket has been set up. GID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Du%2C_%2D%2Duid%3DUID">-u, --uid=UID</A></STRONG><BR>
+<DD>
+User ID to change to.
+<P>uxstreamsocket will switch to that user id after
+the socket has been set up. UID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2DU%2C_%2D%2Duidgid">-U, --uidgid</A></STRONG><BR>
+<DD>
+The same as <STRONG>-u</STRONG> $UID <STRONG>-g</STRONG> $GID.
+<P>Usually used together with envuidgid.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="verbosity options:">Verbosity options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2D1">-1</A></STRONG><BR>
+<DD>
+Print the local port number.
+<P>After preparing to receive connections, print the
+local port number to standard output.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dq%2C_%2D%2Dquiet">-q, --quiet</A></STRONG><BR>
+<DD>
+Quiet. Do not print error messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2DQ">-Q</A></STRONG><BR>
+<DD>
+Print error messages.
+<P>This is the default.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dv%2C_%2D%2Dverbose">-v, --verbose</A></STRONG><BR>
+<DD>
+Verbose. Print error and status messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dversion">--version</A></STRONG><BR>
+<DD>
+Show version information.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dhelp">--help</A></STRONG><BR>
+<DD>
+Show a list of options or the long help on one.
+<P>The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dlonghelp">--longhelp</A></STRONG><BR>
+<DD>
+Show longer help texts for all or one variable
+<P>The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.</P>
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="environment">ENVIRONMENT</A></H1>
+<P><STRONG>uxstreammsocket</STRONG> sets the environment variables <EM>PROTO</EM> (to <STRONG>UXSTREAM</STRONG>)
+and <EM>UXSTREAMLOCALPATH</EM> (to <EM>path</EM>).</P>
+<P>
+<HR>
+<H1><A NAME="examples">EXAMPLES</A></H1>
+<P>uxstreamsocket <STRONG>-r</STRONG> /dev/log setuidgid misclog unsyslogd</P>
+<P>
+<HR>
+<H1><A NAME="bugs">BUGS</A></H1>
+<P>unknown.</P>
+<P>
+<HR>
+<H1><A NAME="author">AUTHOR</A></H1>
+<P>Uwe Ohse</P>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

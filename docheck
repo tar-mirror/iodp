@@ -1,0 +1,245 @@
+#! /bin/sh
+
+for i in `echo $PATH | sed 's/:/ /g'` ; do
+	if test -x $i/printenv ; then
+		PRINTENV=$i/printenv
+	fi
+done
+if test "x$PRINTENV" = x ; then echo "printenv not found" >&2 ; exit 1 ; fi
+
+rm -rf tmp.check
+mkdir tmp.check
+O=`pwd`
+cd tmp.check
+N=`pwd`
+
+# tcpsocket
+echo '--- tcpsocket prints usage message without enough arguments'
+$O/tcpsocket ; echo $?
+$O/tcpsocket 0 ; echo $?
+$O/tcpsocket 0 50016 ; echo $?
+$O/tcpsocket -v 0 50016 ; echo $?
+echo '--- tcpsocket prints error message with unknown port name'
+$O/tcpsocket 0 nonexistingport echo wrong; echo $?
+echo '--- tcpsocket prints error message with unknown host name'
+$O/tcpsocket nonexistinghost 50016 echo wrong; echo $?
+echo '--- tcpssocket prints error message with unresolvable host name'
+$O/tcpsocket thislabelistoolongbecausednshasalimitof63charactersinasinglelabel. 016 echo wrong; echo $?
+echo '--- tcpsocket prints error message with non-local host name'
+$O/tcpsocket 1.2.3.4 016 echo wrong; echo $?
+echo '--- tcpsocket sets basic environment variables'
+env - $O/tcpsocket --fd 10 0 50016 $PRINTENV |sort
+echo '--- tcpsocket sets IODP_n_SYMNAME'
+env - $O/tcpsocket --fd 5 -y symname 0 50016 $PRINTENV |sort
+echo '--- tcpsocket sets IODP_n_LOCALNAME'
+env - $O/tcpsocket --fd 10 -l Localname 127.0.0.1 50016 $PRINTENV |sort
+echo '--- tcpsocket sets SYMNAME and LOCALNAME' 
+env - $O/tcpsocket --fd 10 -y symname -l Localname 127.0.0.1 50016 $PRINTENV |sort
+echo '--- tcpsocket honors -U' 
+env UID=27 $O/tcpsocket -U -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+env GID=1 $O/tcpsocket -U -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- tcpsocket -u 1 tries to set uid to 1'
+env - $O/tcpsocket -u 1 -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- tcpsocket -g 1 tries to set gid to 1'
+env - $O/tcpsocket -g 1 -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- tcpsocket updates IODP and understands --fd' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/tcpsocket --fd 11 -l Localname2 0 50017 $PRINTENV |sort
+echo '--- tcpsocket overwrites old IODP variables' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/tcpsocket --fd 10 -l Localname2 0 50017 $PRINTENV |sort
+echo '--- tcpsocket honors -b // --backlog' 
+env - $O/tcpsocket --fd 10 -b 5 0 50016 $PRINTENV |sort
+env - $O/tcpsocket --fd 10 --backlog 15 0 50016 $PRINTENV |sort
+echo '--- tcpsocket --chroot fails'
+env - $O/tcpsocket --chroot /etc -l Localname 127.0.0.1 50016 echo wrong ;
+echo $?
+
+#udpsocket
+echo
+echo '--- udpsocket prints usage message without enough arguments'
+$O/udpsocket ; echo $?
+$O/udpsocket 0 ; echo $?
+$O/udpsocket 0 50016 ; echo $?
+$O/udpsocket -v 0 50016 ; echo $?
+echo '--- udpsocket prints error message with unknown port name'
+$O/udpsocket 0 nonexistingport echo wrong; echo $?
+echo '--- udpsocket prints error message with unknown host name'
+$O/udpsocket nonexistinghost 50016 echo wrong; echo $?
+echo '--- udpssocket prints error message with unresolvable host name'
+$O/udpsocket thislabelistoolongbecausednshasalimitof63charactersinasinglelabel. 016 echo wrong; echo $?
+echo '--- udpsocket prints error message with non-local host name'
+$O/udpsocket 1.2.3.4 016 echo wrong; echo $?
+echo '--- udpsocket sets basic environment variables'
+env - $O/udpsocket --fd 10 0 50016 $PRINTENV |sort
+echo '--- udpsocket sets IODP_n_SYMNAME'
+env - $O/udpsocket --fd 5 -y symname 0 50016 $PRINTENV |sort
+echo '--- udpsocket sets IODP_n_LOCALNAME'
+env - $O/udpsocket --fd 10 -l Localname 127.0.0.1 50016 $PRINTENV |sort
+echo '--- udpsocket sets SYMNAME and LOCALNAME' 
+env - $O/udpsocket --fd 10 -y symname -l Localname 127.0.0.1 50016 $PRINTENV |sort
+echo '--- udpsocket honors -U' 
+env UID=27 $O/udpsocket -U -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+env GID=1 $O/udpsocket -U -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- udpsocket -u 1 tries to set uid to 1'
+env - $O/udpsocket -u 1 -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- udpsocket -g 1 tries to set gid to 1'
+env - $O/udpsocket -g 1 -l Localname 127.0.0.1 50016 echo wrong ; echo $?
+echo '--- udpsocket updates IODP and understands --fd' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/udpsocket --fd 11 -l Localname2 0 50017 $PRINTENV |sort
+echo '--- udpsocket overwrites old IODP variables' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/udpsocket --fd 10 -l Localname2 0 50017 $PRINTENV |sort
+
+#uxstreamsocket
+echo
+echo '--- uxstreamsocket prints usage message without enough arguments'
+$O/uxstreamsocket ; echo $?
+$O/uxstreamsocket $N/xx ; echo $?
+$O/uxstreamsocket -v $N/xx ; echo $?
+echo '--- uxstreamsocket prints error message with nonexisting path'
+$O/uxstreamsocket xx/y echo wrong; echo $?
+echo '--- uxstreamsocket prints error message with existing file'
+touch testsock
+$O/uxstreamsocket testsock echo wrong; echo $?
+echo '--- uxstreamsocket -R works message'
+$O/uxstreamsocket -R testsock echo OK
+echo '--- uxstreamsocket sets basic environment variables'
+env - $O/uxstreamsocket --fd 10 -R testsock $PRINTENV |sort
+echo '--- uxstreamsocket sets IODP_n_SYMNAME'
+env - $O/uxstreamsocket --fd 5 -y symname -R testsock $PRINTENV |sort
+echo '--- uxstreamsocket honors -U' 
+env UID=27 $O/uxstreamsocket -U -R testsock echo wrong ; echo $?
+env GID=1 $O/uxstreamsocket -U -R testsock echo wrong ; echo $?
+echo '--- uxstreamsocket -u 1 tries to set uid to 1'
+env - $O/uxstreamsocket -u 1 -R testsock echo wrong ; echo $?
+echo '--- uxstreamsocket -g 1 tries to set gid to 1'
+env - $O/uxstreamsocket -g 1 -R testsock echo wrong ; echo $?
+echo '--- uxstreamsocket updates IODP and understands --fd' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/uxstreamsocket --fd 11 -R testsock $PRINTENV |sort
+echo '--- uxstreamsocket overwrites old IODP variables' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/uxstreamsocket --fd 10 -R testsock $PRINTENV |sort
+echo '--- uxstreamsocket honors -b // --backlog' 
+env - $O/uxstreamsocket --fd 10 -b 5 --unlink testsock $PRINTENV |sort
+env - $O/uxstreamsocket --fd 10 --backlog 15 -R testsock $PRINTENV |sort
+echo '--- uxstreamsocket honors -m // --mode'
+env - $O/uxstreamsocket --mode 0724 -R testsock ls -l testsock |cut -d" " -f 1
+echo $?
+$O/uxstreamsocket -m 0600 -R testsock ls -l testsock | cut -d" " -f 1 ; echo $?
+
+#uxdgramsocket
+echo
+echo '--- uxdgramsocket prints usage message without enough arguments'
+$O/uxdgramsocket ; echo $?
+$O/uxdgramsocket $N/xx ; echo $?
+$O/uxdgramsocket -v $N/xx ; echo $?
+echo '--- uxdgramsocket prints error message with nonexisting path'
+$O/uxdgramsocket xx/y echo wrong; echo $?
+echo '--- uxdgramsocket prints error message with existing file'
+touch testsock
+$O/uxdgramsocket testsock echo wrong; echo $?
+echo '--- uxdgramsocket -R works message'
+$O/uxdgramsocket -R testsock echo OK
+echo '--- uxdgramsocket sets basic environment variables'
+env - $O/uxdgramsocket --fd 10 -R testsock $PRINTENV |sort
+echo '--- uxdgramsocket sets IODP_n_SYMNAME'
+env - $O/uxdgramsocket --fd 5 -y symname -R testsock $PRINTENV |sort
+echo '--- uxdgramsocket honors -U' 
+env UID=27 $O/uxdgramsocket -U -R testsock echo wrong ; echo $?
+env GID=1 $O/uxdgramsocket -U -R testsock echo wrong ; echo $?
+echo '--- uxdgramsocket -u 1 tries to set uid to 1'
+env - $O/uxdgramsocket -u 1 -R testsock echo wrong ; echo $?
+echo '--- uxdgramsocket -g 1 tries to set gid to 1'
+env - $O/uxdgramsocket -g 1 -R testsock echo wrong ; echo $?
+echo '--- uxdgramsocket updates IODP and understands --fd' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/uxdgramsocket --fd 11 -R testsock $PRINTENV |sort
+echo '--- uxdgramsocket overwrites old IODP variables' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/uxdgramsocket --fd 10 -R testsock $PRINTENV |sort
+echo '--- uxdgramsocket honors -m // --mode'
+env - $O/uxdgramsocket --mode 0724 -R testsock ls -l testsock |cut -d" " -f 1
+echo $?
+$O/uxdgramsocket -m 0600 -R testsock ls -l testsock | cut -d" " -f 1 ; echo $?
+
+#file-iodp
+echo
+echo '--- file-iodp prints usage message without enough arguments'
+$O/file-iodp ; echo $?
+$O/file-iodp $N/xx ; echo $?
+$O/file-iodp -v $N/xx ; echo $?
+echo '--- file-iodp prints error message with nonexisting path'
+$O/file-iodp xx/y echo wrong; echo $?
+echo '--- file-iodp prints error message with nonexisting file'
+$O/file-iodp testfile echo wrong; echo $?
+echo '--- file-iodp sets basic environment variables'
+env - $O/file-iodp --fd 10 -c testfile $PRINTENV |sort
+echo '--- file-iodp -r works'
+# tell me: why is OpenBSD/2.7 echo so damned stupid to not exit(1) in that
+# case?
+$O/file-iodp -r --fd 1 testfile sh -c 'echo wrong 2>/dev/null'
+echo '--- file-iodp -w works'
+$O/file-iodp -w --fd 0 testfile cat 2>/dev/null ; echo $?
+echo '--- file-iodp -w overwrites'
+echo 12345 >testfile
+$O/file-iodp -w --fd 1 testfile echo 6 
+cat testfile
+echo '--- file-iodp -w -a appends'
+echo 12345 >testfile
+$O/file-iodp -w -a --fd 1 testfile echo 6
+cat testfile
+echo '--- file-iodp -w -t truncates'
+echo 12345 >testfile
+$O/file-iodp -w -c -t --fd 1 testfile echo 6
+cat testfile
+echo '--- file-iodp -w -c -e works'
+echo 12345 >testfile
+$O/file-iodp -w -c -e --fd 1 testfile echo 6
+echo $?
+echo '--- file-iodp -f works'
+env - $O/file-iodp --fd 10 -f testfifo $PRINTENV | sort
+echo $?
+echo '--- file-iodp --reuse works on pipes'
+echo 1234 | \
+env - $O/file-iodp --reuse 0 --fd 5 pipe $PRINTENV | sort
+echo '--- file-iodp --reuse -r works on pipes'
+echo 1234 | \
+env - $O/file-iodp --reuse 0 -r pipe $PRINTENV | sort
+echo '--- file-iodp --reuse -w works on pipes'
+echo 1234 | \
+env - $O/file-iodp --reuse 0 -w pipe $PRINTENV | sort
+echo '--- file-iodp --reuse works on files'
+echo 12345 >testfile
+env - $O/file-iodp --reuse 0 testfile $PRINTENV <testfile | sort
+echo '--- file-iodp --reuse -r works on files'
+env - $O/file-iodp --reuse 0 -r testfile $PRINTENV <testfile | sort
+echo '--- file-iodp --reuse -w works on files'
+env - $O/file-iodp --reuse 0 -w testfile $PRINTENV <testfile | sort
+echo '--- file-iodp --reuse works on /dev/tty'
+env - $O/file-iodp --reuse 0 /dev/tty $PRINTENV </dev/tty | sort
+echo '--- file-iodp sets IODP_n_SYMNAME'
+env - $O/file-iodp --fd 5 -y symname testfile $PRINTENV |sort
+echo '--- file-iodp honors -U' 
+env UID=27 $O/file-iodp -U -r testfile echo wrong ; echo $?
+env GID=1 $O/file-iodp -U -r testfile echo wrong ; echo $?
+echo '--- file-iodp -u 1 tries to set uid to 1'
+env - $O/file-iodp -u 1 -r testfile echo wrong ; echo $?
+echo '--- file-iodp -g 1 tries to set gid to 1'
+env - $O/file-iodp -g 1 -r testfile echo wrong ; echo $?
+echo '--- file-iodp updates IODP and understands --fd' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/file-iodp --fd 11 testfile $PRINTENV |sort
+echo '--- file-iodp overwrites old IODP variables' 
+env - $O/tcpsocket --fd 10 -l Localname1 127.0.0.1 50016 \
+      $O/file-iodp --fd 10 testfile $PRINTENV |sort
+echo '--- file-iodp honors -m // --mode'
+env - $O/file-iodp --mode 0724 --unlink -c testfile ls -l testfile |cut -d" " -f 1
+env - $O/file-iodp --mode 0600 --unlink -c testfile ls -l testfile |cut -d" " -f 1
+
+cd $O || exit 1
+rm -rf tmp.check
+
+exit 0

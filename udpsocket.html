@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<TITLE>create an UDP socket</TITLE>
+<LINK REV="made" HREF="mailto:root@localhost">
+</HEAD>
+
+<BODY>
+
+<A NAME="__index__"></A>
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#name">NAME</A></LI>
+	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
+	<LI><A HREF="#description">DESCRIPTION</A></LI>
+	<LI><A HREF="#options">OPTIONS</A></LI>
+	<UL>
+
+		<LI><A HREF="#child program options:">Child program options:</A></LI>
+		<LI><A HREF="#datagathering options:">Data-gathering options:</A></LI>
+		<LI><A HREF="#verbosity options:">Verbosity options:</A></LI>
+	</UL>
+
+	<LI><A HREF="#environment">ENVIRONMENT</A></LI>
+	<LI><A HREF="#examples">EXAMPLES</A></LI>
+	<LI><A HREF="#bugs">BUGS</A></LI>
+	<LI><A HREF="#author">AUTHOR</A></LI>
+	<LI><A HREF="#see also">SEE ALSO</A></LI>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="name">NAME</A></H1>
+<P>udpsocket - create an UDP socket and run a program</P>
+<P>
+<HR>
+<H1><A NAME="synopsis">SYNOPSIS</A></H1>
+<P>udpsocket: [options] host port command [arguments]</P>
+<P>
+<HR>
+<H1><A NAME="description">DESCRIPTION</A></H1>
+<P><STRONG>udpsocket</STRONG> creates a UDP socket, binds it to <EM>host</EM> and <EM>port</EM>
+and runs <EM>program</EM> with the remaining arguments.</P>
+<P><EM>options</EM> is a is a series of getopt or  getopt_long style options. See
+below for more information.</P>
+<P>The socket is described by <EM>host</EM> and <EM>port</EM>. <EM>host</EM>
+may be 0, allowing connections to any local IP
+address; or a dotted-decimal IP address, allowing connections only to
+that address; or a host name, allowing connections to the first IP
+address for that host. Host names are fed through qualification using
+dns_ip4_qualify.</P>
+<P><EM>port</EM>
+may be a name from /etc/services or a number; if it is 0,
+<STRONG>udpsocket</STRONG> will choose a free UDP port.</P>
+<P>
+<HR>
+<H1><A NAME="options">OPTIONS</A></H1>
+<P>
+<H2><A NAME="child program options:">Child program options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2DC%2C_%2D%2Dchroot%3DDIR">-C, --chroot=DIR</A></STRONG><BR>
+<DD>
+Change the working directory to <EM>DIR</EM>. Then change the
+root directory of the process to <EM>.</EM> (the current
+directory).
+This will be done after the socket has been created
+and before changing the group or user ID.
+<P></P>
+<DT><STRONG><A NAME="item_%2DF%2C_%2D%2Dfd%3DN">-F, --fd=N</A></STRONG><BR>
+<DD>
+Move socket handle to file descriptor N.
+<P>`N' may be a whitespace or comma separated list.
+The default is to move it to 5.
+Note that moving the socket to file descriptor 2
+may disturb the output of error messages.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dg%2C_%2D%2Dgid%3DGID">-g, --gid=GID</A></STRONG><BR>
+<DD>
+Group ID to change to.
+<P>udpsocket will switch to that group id after
+the socket has been set up. GID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Du%2C_%2D%2Duid%3DUID">-u, --uid=UID</A></STRONG><BR>
+<DD>
+User ID to change to.
+<P>udpsocket will switch to that user id after
+the socket has been set up. UID has to be a
+positive integer.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2DU%2C_%2D%2Duidgid">-U, --uidgid</A></STRONG><BR>
+<DD>
+The same as <STRONG>-u</STRONG> $UID <STRONG>-g</STRONG> $GID.
+<P>Usually used together with envuidgid.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="datagathering options:">Data-gathering options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2Dl%2C_%2D%2Dlocalhost%3DNAME">-l, --localhost=NAME</A></STRONG><BR>
+<DD>
+Use NAME as local host name.
+<P>Do not look up the local host name in the DNS.
+This information is used to set the environment
+variable UDPLOCALHOST.</P>
+<P></P></DL>
+<P>
+<H2><A NAME="verbosity options:">Verbosity options:</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_%2D1">-1</A></STRONG><BR>
+<DD>
+Print the local port number.
+<P>After preparing to receive connections, print the
+local port number to standard output.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dq%2C_%2D%2Dquiet">-q, --quiet</A></STRONG><BR>
+<DD>
+Quiet. Do not print error messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2DQ">-Q</A></STRONG><BR>
+<DD>
+Print error messages.
+<P>This is the default.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2Dv%2C_%2D%2Dverbose">-v, --verbose</A></STRONG><BR>
+<DD>
+Verbose. Print error and status messages.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dversion">--version</A></STRONG><BR>
+<DD>
+Show version information.
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dhelp">--help</A></STRONG><BR>
+<DD>
+Show a list of options or the long help on one.
+<P>The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.</P>
+<P></P>
+<DT><STRONG><A NAME="item_%2D%2Dlonghelp">--longhelp</A></STRONG><BR>
+<DD>
+Show longer help texts for all or one variable
+<P>The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.</P>
+<P></P></DL>
+<P>
+<HR>
+<H1><A NAME="environment">ENVIRONMENT</A></H1>
+<P><STRONG>udpsocket</STRONG> sets the environment variables <EM>PROTO</EM> (to <STRONG>UDP</STRONG>),
+<EM>UDPLOCALPORT</EM> and <EM>UDPLOCALIP</EM>,
+and will set <EM>UDPLOCALHOST</EM> if this information is available.
+If udpsocket bound the socket to <STRONG>any</STRONG> local IP address then
+<EM>UDPLOCALIP</EM> will be <STRONG>``0.0.0.0''</STRONG> and <EM>UDPLOCALHOST</EM> will be unset.</P>
+<P>
+<HR>
+<H1><A NAME="examples">EXAMPLES</A></H1>
+<PRE>
+        # start a remote log receiving demon
+        udpsocket 0 514 setuidgid remotelog unsyslogd</PRE>
+<PRE>
+        # prepare for amanda
+        udpsocket 0 10080 setuidgid amanda \
+        udpwaitserver /whereever/amanda</PRE>
+<P>
+<HR>
+<H1><A NAME="bugs">BUGS</A></H1>
+<P>unknown.</P>
+<P>
+<HR>
+<H1><A NAME="author">AUTHOR</A></H1>
+<P>Uwe Ohse</P>
+<P>
+<HR>
+<H1><A NAME="see also">SEE ALSO</A></H1>
+<h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
+</BODY>
+
+</HTML>

@@ -1,0 +1,206 @@
+=head1 NAME
+
+file-iodp - set IODP environment for file handles
+
+=head1 SYNOPSIS
+
+file-iodp [options] filename program [arguments]
+
+=head1 DESCRIPTION
+
+B<file-iodp> opens a file and runs
+I<program> with the remaining arguments. In an alternative 
+operation mode B<file-iodp> may just set the IODP environment
+variables for an existing file handle and run I<program>.
+
+I<options> is a is a series of getopt or  getopt_long style options. See
+below for more information.
+
+=head1 OPTIONS
+
+=head2 File options:
+
+Note: The default is to open the file read-write, in non-truncating
+overwrite mode (like O_RDWR does).
+
+=over 8
+
+=item -r, --rdonly
+
+Open the file read-only.
+
+=item -w, --wronly
+
+Open the file write-only. 
+
+=item -a, --append
+
+Append to end of file. Do not truncate.
+
+=item -c, --create
+
+Create new file, if needed.
+
+=item -e, --exclusive
+
+Fail if file already exists.
+
+=item -t, --truncate
+
+Truncate file.
+
+=item -f, --fifo
+
+Create fifo, not file.
+
+=item -m, --mode=MODE
+
+Set access rights of the file to MODE.
+The default is 0644 for files and 622 for fifos.
+
+=item -R, --unlink
+
+Remove existing file. This will be done before any other operation.
+
+=item -n, --reuse=FD
+
+Reuse existing file handle FD, do not open another file. B<file-iodp>
+will act as if it opened the file and got the file handle B<FD> in
+return.
+
+=back
+
+=head2 Child program options:
+
+=over 8
+
+=item -C, --chroot=DIR
+
+Change the working directory to I<DIR>. Then change the
+root directory of the process to I<.> (the current
+directory).
+This will be done after the socket has been created
+and before changing the group or user ID.
+
+=item   -F, --fd=N                
+
+Move socket handle to file descriptor I<N>.
+
+I<N> is an integer in the range from 0 to a system
+"dependent limit. The default is to not move it.
+Note that moving the socket to file descriptor 2
+may disturb the output of error messages.
+
+=item   -g, --gid=GID             
+
+Group ID to change to.
+
+tcpsocket will switch to that group id after
+the socket has been set up. GID has to be a
+positive integer.
+
+=item   -u, --uid=UID             
+
+User ID to change to.
+
+tcpsocket will switch to that user id after
+the socket has been set up. UID has to be a
+positive integer.
+
+=item   -U, --uidgid              
+
+The same as B<-u> $UID B<-g> $GID.
+
+Usually used together with envuidgid.
+
+=back
+
+=head2 Data-gathering options:
+
+=over 8
+
+=item -y, --symbolic-name=NAME      
+
+Use I<NAME> as symbolic socket name.
+
+This is used for $IODP_n_SYMNAME, and may be
+used by IODP compliant application in an
+application dependant way. The default is to not
+set it.
+
+=back
+
+=head2 Verbosity options:
+
+=over 8
+
+=item   -1                        
+
+Print the local port number to the standard output.
+
+=item   -q, --quiet               
+
+Quiet. Do not print error messages.
+
+
+=item   -Q                        
+
+Print error messages.
+
+This is the default.
+
+=item   -v, --verbose             
+
+Verbose. Print error and status messages.
+
+
+=item       --version             
+
+Show version information.
+
+
+=item       --help                
+
+Show a list of options or the long help on one.
+
+The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.
+
+=item       --longhelp            
+
+Show longer help texts for all or one variable
+
+The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.
+
+=back
+
+
+=head1 ENVIRONMENT
+
+B<tcpsocket> sets the environment variables documented in the
+I<iodp-tcp> specification.
+
+=head1 EXAMPLES
+
+	file-iodp -r /proc/kmsg \
+	/usr/bin/logger -t kernel
+
+=head1 BUGS
+
+unknown.
+
+=head1 AUTHOR
+
+Uwe Ohse
+
+=head1 SEE ALSO
+
+=for man tcpsocket(8), udpsocket(8), uxstreamsocket(8), uxdgramsocket(8),
+iodp(5).
+
+=for html <h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
+

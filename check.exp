@@ -1,0 +1,443 @@
+--- tcpsocket prints usage message without enough arguments
+tcpsocket: usage: tcpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+tcpsocket: usage: tcpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+tcpsocket: usage: tcpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+tcpsocket: usage: tcpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+--- tcpsocket prints error message with unknown port name
+tcpsocket: nonexistingport: not a valid port number or name
+111
+--- tcpsocket prints error message with unknown host name
+tcpsocket: fatal: no IP address for nonexistinghost
+100
+--- tcpssocket prints error message with unresolvable host name
+tcpsocket: fatal: temporarily unable to figure out IP address for thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.: protocol error
+111
+--- tcpsocket prints error message with non-local host name
+tcpsocket: cannot bind socket: address not available
+111
+--- tcpsocket sets basic environment variables
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50016
+IODP_10_PROTO=TCP4
+--- tcpsocket sets IODP_n_SYMNAME
+IODP=5
+IODP_5_FLAGS=a
+IODP_5_LISTEN=20
+IODP_5_LOCALADDR1=0.0.0.0
+IODP_5_LOCALADDR2=50016
+IODP_5_PROTO=TCP4
+IODP_5_SYMNAME=symname
+--- tcpsocket sets IODP_n_LOCALNAME
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname
+IODP_10_PROTO=TCP4
+--- tcpsocket sets SYMNAME and LOCALNAME
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname
+IODP_10_PROTO=TCP4
+IODP_10_SYMNAME=symname
+--- tcpsocket honors -U
+tcpsocket: cannot change UID to 27: permission denied
+100
+tcpsocket: cannot change GID to 1: permission denied
+100
+--- tcpsocket -u 1 tries to set uid to 1
+tcpsocket: cannot change UID to 1: permission denied
+100
+--- tcpsocket -g 1 tries to set gid to 1
+tcpsocket: cannot change GID to 1: permission denied
+100
+--- tcpsocket updates IODP and understands --fd
+IODP=10,11
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname1
+IODP_10_PROTO=TCP4
+IODP_11_FLAGS=a
+IODP_11_LISTEN=20
+IODP_11_LOCALADDR1=0.0.0.0
+IODP_11_LOCALADDR2=50017
+IODP_11_LOCALNAME=Localname2
+IODP_11_PROTO=TCP4
+--- tcpsocket overwrites old IODP variables
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50017
+IODP_10_LOCALNAME=Localname2
+IODP_10_PROTO=TCP4
+--- tcpsocket honors -b // --backlog
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=5
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50016
+IODP_10_PROTO=TCP4
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=15
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50016
+IODP_10_PROTO=TCP4
+--- tcpsocket --chroot fails
+tcpsocket: cannot chroot to /etc: permission denied
+100
+
+--- udpsocket prints usage message without enough arguments
+udpsocket: usage: udpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+udpsocket: usage: udpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+udpsocket: usage: udpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+udpsocket: usage: udpsocket [options] host port program [arguments]
+Use the --help option for more information.
+2
+--- udpsocket prints error message with unknown port name
+udpsocket: nonexistingport: not a valid port number or name
+111
+--- udpsocket prints error message with unknown host name
+udpsocket: fatal: no IP address for nonexistinghost
+100
+--- udpssocket prints error message with unresolvable host name
+udpsocket: fatal: temporarily unable to figure out IP address for thislabelistoolongbecausednshasalimitof63charactersinasinglelabel.: protocol error
+111
+--- udpsocket prints error message with non-local host name
+udpsocket: cannot bind socket: address not available
+111
+--- udpsocket sets basic environment variables
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50016
+IODP_10_PROTO=UDP4
+--- udpsocket sets IODP_n_SYMNAME
+IODP=5
+IODP_5_FLAGS=rw
+IODP_5_LOCALADDR1=0.0.0.0
+IODP_5_LOCALADDR2=50016
+IODP_5_PROTO=UDP4
+IODP_5_SYMNAME=symname
+--- udpsocket sets IODP_n_LOCALNAME
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname
+IODP_10_PROTO=UDP4
+--- udpsocket sets SYMNAME and LOCALNAME
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname
+IODP_10_PROTO=UDP4
+IODP_10_SYMNAME=symname
+--- udpsocket honors -U
+udpsocket: cannot change UID to 27: permission denied
+100
+udpsocket: cannot change GID to 1: permission denied
+100
+--- udpsocket -u 1 tries to set uid to 1
+udpsocket: cannot change UID to 1: permission denied
+100
+--- udpsocket -g 1 tries to set gid to 1
+udpsocket: cannot change GID to 1: permission denied
+100
+--- udpsocket updates IODP and understands --fd
+IODP=10,11
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname1
+IODP_10_PROTO=TCP4
+IODP_11_FLAGS=rw
+IODP_11_LOCALADDR1=0.0.0.0
+IODP_11_LOCALADDR2=50017
+IODP_11_LOCALNAME=Localname2
+IODP_11_PROTO=UDP4
+--- udpsocket overwrites old IODP variables
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALADDR1=0.0.0.0
+IODP_10_LOCALADDR2=50017
+IODP_10_LOCALNAME=Localname2
+IODP_10_PROTO=UDP4
+
+--- uxstreamsocket prints usage message without enough arguments
+uxstreamsocket: usage: uxstreamsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+uxstreamsocket: usage: uxstreamsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+uxstreamsocket: usage: uxstreamsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+--- uxstreamsocket prints error message with nonexisting path
+uxstreamsocket: cannot bind to xx/y: file does not exist
+111
+--- uxstreamsocket prints error message with existing file
+uxstreamsocket: cannot bind to testsock: address already used
+111
+--- uxstreamsocket -R works message
+OK
+--- uxstreamsocket sets basic environment variables
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXSTREAM
+--- uxstreamsocket sets IODP_n_SYMNAME
+IODP=5
+IODP_5_FLAGS=a
+IODP_5_LISTEN=20
+IODP_5_LOCALNAME=testsock
+IODP_5_PROTO=UXSTREAM
+IODP_5_SYMNAME=symname
+--- uxstreamsocket honors -U
+uxstreamsocket: cannot change UID to 27: permission denied
+100
+uxstreamsocket: cannot change GID to 1: permission denied
+100
+--- uxstreamsocket -u 1 tries to set uid to 1
+uxstreamsocket: cannot change UID to 1: permission denied
+100
+--- uxstreamsocket -g 1 tries to set gid to 1
+uxstreamsocket: cannot change GID to 1: permission denied
+100
+--- uxstreamsocket updates IODP and understands --fd
+IODP=10,11
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname1
+IODP_10_PROTO=TCP4
+IODP_11_FLAGS=a
+IODP_11_LISTEN=20
+IODP_11_LOCALNAME=testsock
+IODP_11_PROTO=UXSTREAM
+--- uxstreamsocket overwrites old IODP variables
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXSTREAM
+--- uxstreamsocket honors -b // --backlog
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=5
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXSTREAM
+IODP=10
+IODP_10_FLAGS=a
+IODP_10_LISTEN=15
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXSTREAM
+--- uxstreamsocket honors -m // --mode
+srwx-w-r--
+0
+srw-------
+0
+
+--- uxdgramsocket prints usage message without enough arguments
+uxdgramsocket: usage: uxdgramsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+uxdgramsocket: usage: uxdgramsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+uxdgramsocket: usage: uxdgramsocket path-to-socket program [args]
+Use the --help option for more information.
+2
+--- uxdgramsocket prints error message with nonexisting path
+uxdgramsocket: cannot bind to xx/y: file does not exist
+111
+--- uxdgramsocket prints error message with existing file
+uxdgramsocket: cannot bind to testsock: address already used
+111
+--- uxdgramsocket -R works message
+OK
+--- uxdgramsocket sets basic environment variables
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXDGRAM
+--- uxdgramsocket sets IODP_n_SYMNAME
+IODP=5
+IODP_5_FLAGS=rw
+IODP_5_LOCALNAME=testsock
+IODP_5_PROTO=UXDGRAM
+IODP_5_SYMNAME=symname
+--- uxdgramsocket honors -U
+uxdgramsocket: cannot change UID to 27: permission denied
+100
+uxdgramsocket: cannot change GID to 1: permission denied
+100
+--- uxdgramsocket -u 1 tries to set uid to 1
+uxdgramsocket: cannot change UID to 1: permission denied
+100
+--- uxdgramsocket -g 1 tries to set gid to 1
+uxdgramsocket: cannot change GID to 1: permission denied
+100
+--- uxdgramsocket updates IODP and understands --fd
+IODP=10,11
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname1
+IODP_10_PROTO=TCP4
+IODP_11_FLAGS=rw
+IODP_11_LOCALNAME=testsock
+IODP_11_PROTO=UXDGRAM
+--- uxdgramsocket overwrites old IODP variables
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALNAME=testsock
+IODP_10_PROTO=UXDGRAM
+--- uxdgramsocket honors -m // --mode
+srwx-w-r--
+0
+srw-------
+0
+
+--- file-iodp prints usage message without enough arguments
+file-iodp: usage: file-iodp filename program [args]
+Use the --help option for more information.
+2
+file-iodp: usage: file-iodp filename program [args]
+Use the --help option for more information.
+2
+file-iodp: usage: file-iodp filename program [args]
+Use the --help option for more information.
+2
+--- file-iodp prints error message with nonexisting path
+file-iodp: cannot open xx/y: file does not exist
+1
+--- file-iodp prints error message with nonexisting file
+file-iodp: cannot open testfile: file does not exist
+1
+--- file-iodp sets basic environment variables
+IODP=10
+IODP_10_FLAGS=rwS
+IODP_10_LOCALNAME=testfile
+IODP_10_PROTO=FILE
+--- file-iodp -r works
+--- file-iodp -w works
+1
+--- file-iodp -w overwrites
+6
+345
+--- file-iodp -w -a appends
+12345
+6
+--- file-iodp -w -t truncates
+6
+--- file-iodp -w -c -e works
+file-iodp: cannot open testfile: file already exists
+1
+--- file-iodp -f works
+IODP=10
+IODP_10_FLAGS=rw
+IODP_10_LOCALNAME=testfifo
+IODP_10_PROTO=FILE
+0
+--- file-iodp --reuse works on pipes
+IODP=5
+IODP_5_FLAGS=rw
+IODP_5_LOCALNAME=pipe
+IODP_5_PROTO=FILE
+--- file-iodp --reuse -r works on pipes
+IODP=0
+IODP_0_FLAGS=r
+IODP_0_LOCALNAME=pipe
+IODP_0_PROTO=FILE
+--- file-iodp --reuse -w works on pipes
+IODP=0
+IODP_0_FLAGS=w
+IODP_0_LOCALNAME=pipe
+IODP_0_PROTO=FILE
+--- file-iodp --reuse works on files
+IODP=0
+IODP_0_FLAGS=rwS
+IODP_0_LOCALNAME=testfile
+IODP_0_PROTO=FILE
+--- file-iodp --reuse -r works on files
+IODP=0
+IODP_0_FLAGS=rS
+IODP_0_LOCALNAME=testfile
+IODP_0_PROTO=FILE
+--- file-iodp --reuse -w works on files
+IODP=0
+IODP_0_FLAGS=wS
+IODP_0_LOCALNAME=testfile
+IODP_0_PROTO=FILE
+--- file-iodp --reuse works on /dev/tty
+IODP=0
+IODP_0_FLAGS=rwT
+IODP_0_LOCALNAME=/dev/tty
+IODP_0_PROTO=FILE
+--- file-iodp sets IODP_n_SYMNAME
+IODP=5
+IODP_5_FLAGS=rwS
+IODP_5_LOCALNAME=testfile
+IODP_5_PROTO=FILE
+IODP_5_SYMNAME=symname
+--- file-iodp honors -U
+file-iodp: cannot change UID to 27: permission denied
+100
+file-iodp: cannot change GID to 1: permission denied
+100
+--- file-iodp -u 1 tries to set uid to 1
+file-iodp: cannot change UID to 1: permission denied
+100
+--- file-iodp -g 1 tries to set gid to 1
+file-iodp: cannot change GID to 1: permission denied
+100
+--- file-iodp updates IODP and understands --fd
+IODP=10,11
+IODP_10_FLAGS=a
+IODP_10_LISTEN=20
+IODP_10_LOCALADDR1=127.0.0.1
+IODP_10_LOCALADDR2=50016
+IODP_10_LOCALNAME=Localname1
+IODP_10_PROTO=TCP4
+IODP_11_FLAGS=rwS
+IODP_11_LOCALNAME=testfile
+IODP_11_PROTO=FILE
+--- file-iodp overwrites old IODP variables
+IODP=10
+IODP_10_FLAGS=rwS
+IODP_10_LOCALNAME=testfile
+IODP_10_PROTO=FILE
+--- file-iodp honors -m // --mode
+-rwx-w-r--
+-rw-------

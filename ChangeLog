@@ -1,0 +1,29 @@
+2001-01-18  Uwe Ohse  <uwe@fjoras.ohse.de>
+
+ui:       added echoserver documentation.
+internal: fix "make distcheck".
+version:  0.2.4
+
+2001-01-16  Uwe Ohse  <uwe@fjoras.ohse.de>
+
+ui:       added echoserver.
+
+2001-01-15  Uwe Ohse  <uwe@fjoras.ohse.de>
+
+version:  0.2.3 (internal use only)
+
+2000-10-22  Uwe Ohse  <uwe@fjoras.ohse.de>
+
+ui:       IP sockets will be reused (SO_REUSEADDR)
+
+2000-08-13  Uwe Ohse  <uwe@fjoras.ohse.de>
+
+ui:       implemented chroot option (main.c).
+          documented that.
+          and uxdgramsocket to -R/--unlink to be in sync with
+          file-iodp.
+          documented that and changed to self check.
+internal: updated to uogetopt.c to new version. use uogetopt_join to
+          reduce source size: move common options to verb_socket.c
+          or main.c.
+version:  0.2.1

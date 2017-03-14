@@ -1,0 +1,219 @@
+=head1 NAME
+
+	 tcpsocket - create a TCP socket and run a program
+
+=head1 SYNOPSIS
+
+tcpsocket [options] host port program [arguments]
+
+=head1 DESCRIPTION
+
+B<tcpserver> creates a TCP socket, binds it to I<host> and I<port>
+and runs I<program> with the remaining arguments.
+
+I<options> is a is a series of getopt or  getopt_long style options. See
+below for more information.
+
+The socket is described by I<host> and I<port>. I<host>
+may be 0, allowing connections to any local IP address; 
+or a dotted-decimal IP address, allowing connections only to
+that address; or a host name, allowing connections to the first IP
+address for that host. Host names are fed through qualification using
+DNS_IP4_qualify.
+I<port> may be a name from /etc/services or a number; if it is 0,
+B<tcpsocket> will choose a free TCP port.
+
+=head1 OPTIONS
+Some people make this separate from the
+description.
+
+=over 8
+
+=back
+
+=head2 Socket options:
+
+=over 8
+
+=item   -b, --backlog=N           
+
+Allow a backlog of I<N> TCP SYNs.
+
+On some systems, I<N> is silently limited to 5.
+On systems supporting SYN cookies, the backlog is
+irrelevant. The default is 20.
+
+=item   -d, --tcpdelay            
+
+Delay sending data for a fraction of a second
+whenever the remote host is responding slowly.
+This is the default, but it may not be in the
+future; if you want it, set it explicitly.
+
+=item   -D, --tcpnodelay          
+
+Never delay sending data; enable TCP_NODELAY.
+
+
+=item   -o, --allow-ip-options    
+
+Leave IP options alone.
+
+If the client is sending packets along an
+IP source route, send packets back along the
+same route.
+
+=item   -O, --kill-ip-options     
+
+Kill IP options.
+
+A client can still use source routing to connect
+and to send data, but packets will be sent back
+along the default route.
+This is the default.
+
+=back
+
+=head2 Child program options:
+
+=over 8
+
+=item -C, --chroot=DIR
+
+Change the working directory to I<DIR>. Then change the
+root directory of the process to I<.> (the current 
+directory). 
+This will be done after the socket has been created
+and before changing the group or user ID.
+
+=item   -F, --fd=N                
+
+Move socket handle to file descriptor I<N>.
+
+I<N> is an integer in the range from 0 to a system
+"dependent limit. The default is to not move it.
+Note that moving the socket to file descriptor 2
+may disturb the output of error messages.
+
+=item   -g, --gid=GID             
+
+Group ID to change to.
+
+tcpsocket will switch to that group id after
+the socket has been set up. GID has to be a
+positive integer.
+
+=item   -u, --uid=UID             
+
+User ID to change to.
+
+tcpsocket will switch to that user id after
+the socket has been set up. UID has to be a
+positive integer.
+
+=item   -U, --uidgid              
+
+The same as B<-u> $UID B<-g> $GID.
+
+Usually used together with envuidgid.
+
+=back
+
+=head2 Data-gathering options:
+
+=over 8
+
+=item -l, --localhost=NAME      
+
+Use I<NAME> as local host name.
+
+Do not look up the local host name in the DNS.
+This information is used for log files and
+the environment variable I<IODP_n_LOCALNAME>
+
+=item -y, --symbolic-name=NAME      
+
+Use I<NAME> as symbolic socket name.
+
+This is used for $IODP_n_SYMNAME, and may be
+used by IODP compliant application in an
+application dependant way. The default is to not
+set it.
+
+=back
+
+=head2 Verbosity options:
+
+=over 8
+
+=item   -1                        
+
+Print the local port number to the standard output.
+
+=item   -q, --quiet               
+
+Quiet. Do not print error messages.
+
+
+=item   -Q                        
+
+Print error messages.
+
+This is the default.
+
+=item   -v, --verbose             
+
+Verbose. Print error and status messages.
+
+
+=item       --version             
+
+Show version information.
+
+
+=item       --help                
+
+Show a list of options or the long help on one.
+
+The use with an argument shows the long helptext
+of that option, without an argument it will list
+all options.
+
+=item       --longhelp            
+
+Show longer help texts for all or one variable
+
+The use with an argument shows the long help for
+this option, without arguments it shows the long
+description of all options.
+
+=back
+
+=head1 ENVIRONMENT
+
+B<tcpsocket> sets the environment variables documented in the
+I<iodp-tcp> specification.
+
+=head1 EXAMPLES
+
+	tcpsocket 0 119 \
+	setuidgid news \
+	env - PATH="$PATH:/news/bin" TMPDIR=/news/tmp SHELL=/bin/sh \
+	    LOGNAME=news USER=news HOME=/news  \
+	/news/bin/innd
+
+=head1 BUGS
+
+unknown.
+
+=head1 AUTHOR
+
+Uwe Ohse
+
+=head1 SEE ALSO
+
+=for man udpsocket(8), uxstreamsocket(8), uxdgramsocket(8), file-iodp(8),
+iodp(5).
+
+=for html <h4><a href="../uwe.html">Uwe Ohse homepage</a></h4>
+<h3><a href="../iodp.html">IODP tools</a></h3>
